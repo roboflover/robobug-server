@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
-import { EventModule } from './event/event.module';
+import { CatsModule } from './cats/cats.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { PostModule } from './post/post.module';
-import { TicketModule } from './ticket/ticket.module';
-import { UserModule } from './user/user.module';
-import { EventController } from './event/event.controller';
-import { PostController } from './post/post.controller';
-import { TicketController } from './ticket/ticket.controller';
-import { UserController } from './user/user.controller';
-import { EventService } from './event/event.service';
-import { PostService } from './post/post.service';
-import { TicketService } from './ticket/ticket.service';
-import { UserService } from './user/user.service';
-import { PrismaService } from './prisma/prisma.service';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
-  imports: [ EventModule, PostModule, TicketModule, UserModule ],
-  controllers: [ EventController, PostController, TicketController, UserController ],
-  providers: [ EventService,  PostService, TicketService, UserService, PrismaService ],
+  imports: [
+    CatsModule, 
+    AuthModule, 
+    UsersModule, 
+    PostModule,
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        FRONTEND_URL: Joi.string(),
+      }),
+    })
+  ],
 })
 export class AppModule {}
